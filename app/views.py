@@ -1,31 +1,13 @@
-from app import app, welcome_message
+from flask import render_template
+
+from app import app
 
 
 @app.route("/")
 def index():
-    return f"""
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Friendster</title>
-</head>
-<body>
-    <h1>{welcome_message}</h1>
-</body>
-</html>
-"""
+    return render_template("index.html")
 
 
 @app.route("/about")
 def about():
-    return """
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Friendster</title>
-</head>
-<body>
-    <h1>About page</h1>
-</body>
-</html>
-"""
+    return render_template("about.html")
