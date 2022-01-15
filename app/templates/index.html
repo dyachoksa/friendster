@@ -7,6 +7,10 @@
 
     <hr>
 
+    {% if current_user.is_authenticated %}
+      <p>Hi {{ current_user.name }}!</p>
+    {% endif %}
+
     <p>Voluptatem! Tellus molestie eaque ante condimentum placeat justo! 
         Incidunt wisi a anim tempora laboriosam sint, parturient nibh facere 
         architecto incidunt tempore bibendum, nec mauris ducimus quae maecenas 

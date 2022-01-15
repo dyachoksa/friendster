@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Register{% endblock %}
+
+{% block content %}
+    <h1>Sign Up</h1>
+
+    <form action="{{ url_for('register') }}" method="post">
+        <p>
+            <label for="id-email">Email</label> <br>
+            <input id="id-email" type="email" name="email" autocomplete="username" required autofocus>
+        </p>
+
+        <p>
+            <label for="id-name">Name</label> <br>
+            <input id="id-name" type="text" name="name" required>
+        </p>
+
+        <p>
+            <label for="id-password">Password</label> <br>
+            <input id="id-password" type="password" name="password" autocomplete="new-password" required>
+        </p>
+
+        <button type="submit">Sing up</button>&nbsp;
+        <a href="{{ url_for('login') }}">Already has an account?</a>
+    </form>
+{% endblock %}
