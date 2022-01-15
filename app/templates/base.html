@@ -6,15 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <title>{% block title %}Home{% endblock %} - Friendster</title>
+
+    <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
 </head>
 <body>
     <header>
+        <h1>Frienster</h1>
         <nav>
-            <ul>
-                <li><a href="{{ url_for('index') }}">Home</a></li>
-                <li><a href="{{ url_for('about') }}">About</a></li>
-                <li><a href="{{ url_for('terms') }}">Terms</a></li>
-            </ul>
+            <a href="{{ url_for('index') }}">Home</a>
+            <a href="{{ url_for('about') }}">About</a>
+            <a href="{{ url_for('terms') }}">Terms</a>
         </nav>
     </header>
 
@@ -23,7 +24,7 @@
     </main>
 
     <footer>
-        <p>&copy; 2021, Friendster Inc.</p>
+        <p>&copy; 2021-2022, Friendster Inc.</p>
     </footer>
 </body>
 </html>
