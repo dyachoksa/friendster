@@ -1,4 +1,4 @@
-from flask import render_template, request, redirect, url_for
+from flask import render_template, request, redirect, url_for, flash
 from flask_login import login_user, logout_user, login_required
 
 from app import app
@@ -36,6 +36,8 @@ def login():
 
         login_user(user)
 
+        flash("Welcome back! You successfully signed in.", "success")
+
         return redirect(url_for("index"))
 
     return render_template("login.html")
@@ -48,6 +50,8 @@ def register():
         user.set_password(request.form["password"])
         user.save()
 
+        flash("Welcome! You successfully registered on our site. Please login to continue.", "success")
+
         return redirect(url_for("index"))
 
     return render_template("register.html")
@@ -57,5 +61,7 @@ def register():
 @login_required
 def logout():
     logout_user()
+
+    flash("Goodbay! We hope to see you soon again.", "success")
 
     return redirect(url_for("index"))
