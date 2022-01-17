@@ -10,6 +10,10 @@
     {% endif %}
 
     <form action="{{ url_for('login') }}" method="post">
+        {% if next %}
+            <input type="hidden" name="next" value="{{ next }}">
+        {% endif %}
+
         <p>
             <label for="id-email">Email</label> <br>
             <input id="id-email" type="email" name="email" autocomplete="username" required autofocus>

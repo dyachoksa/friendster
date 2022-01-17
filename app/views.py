@@ -23,6 +23,8 @@ def terms():
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
+    next = request.args.get('next')
+
     if request.method == "POST":
         email = request.form["email"]
         password = request.form["password"]
@@ -38,9 +40,11 @@ def login():
 
         flash("Welcome back! You successfully signed in.", "success")
 
-        return redirect(url_for("index"))
+        next = request.form.get('next')
 
-    return render_template("login.html")
+        return redirect(next or url_for("index"))
+
+    return render_template("login.html", next=next)
 
 
 @app.route("/register", methods=["GET", "POST"])
@@ -57,6 +61,12 @@ def register():
         return redirect(url_for("index"))
 
     return render_template("register.html")
+
+
+@app.route("/profile")
+@login_required
+def profile():
+    return render_template("profile.html")
 
 
 @app.route("/logout")
