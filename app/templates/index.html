@@ -3,9 +3,9 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-    <h1>Welcome to the Friendster!</h1>
+    <h1 class="text-center">Welcome to the Friendster!</h1>
 
-    <hr>
+    <img src="{{ url_for('static', filename='images/friends-main.jpg') }}" alt="Friends">
 
     {% if current_user.is_authenticated %}
       <p>Hi {{ current_user.name }}!</p>

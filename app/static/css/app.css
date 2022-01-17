@@ -1,0 +1,22 @@
+.text-center {
+    text-align: center;
+}
+
+.flashes {
+    border: 1px solid #b8b8b8;
+    border-radius: 8px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+.flashes .success {
+    color: green;
+}
+
+.flashes .error {
+    color: rgb(197, 10, 10);
+}
+
+.flashes .info {
+    color: royalblue;
+}

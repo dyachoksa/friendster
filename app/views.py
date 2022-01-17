@@ -50,7 +50,9 @@ def register():
         user.set_password(request.form["password"])
         user.save()
 
-        flash("Welcome! You successfully registered on our site. Please login to continue.", "success")
+        login_page_url = url_for('login')
+
+        flash(f"Welcome! You successfully registered on our site. Please <a href='{login_page_url}'>login</a> to continue.", "success")
 
         return redirect(url_for("index"))
 
