@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Users{% endblock %}
+
+{% block content %}
+    <h1>Our users</h1>
+
+    {% for user in users %}
+        <p>
+            <strong>{{ user.name }}</strong> <br>
+            <small><em>
+                Last seen:
+                {% if user.last_logged_at %}
+                    {{ user.last_logged_at.strftime('%c') }}
+                {% else %}
+                    never
+                {% endif %}    
+            </em></small>
+        </p>
+    {% endfor %}
+
+    <blockquote>
+        <p>Success is going from failure to failure without losing your enthusiasm.</p>
+        <p><cite>– Winston Churchill</cite></p>
+    </blockquote>
+{% endblock %}

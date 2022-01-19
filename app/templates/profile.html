@@ -5,6 +5,13 @@
 {% block content %}
     <h1>Welcome, {{ current_user.name }}!</h1>
 
+    <p>
+        <strong>Last seen</strong>:
+        {% if current_user.last_logged_at %}
+            {{ current_user.last_logged_at.strftime('%c') }}
+        {% endif %}
+    </p>
+
     <blockquote>
         <p>Success is going from failure to failure without losing your enthusiasm.</p>
         <p><cite>– Winston Churchill</cite></p>

@@ -1,13 +1,19 @@
-import uuid
+import datetime as dt
 
 from passlib.hash import pbkdf2_sha256
 
-class User:
-    def __init__(self, email=None, name=None, **kwargs):
-        self.id = uuid.uuid4()
-        self.email = email
-        self.name = name
-        self.password = kwargs.get("password")
+from app import db
+
+
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String, unique=True, nullable=False)
+    name = db.Column(db.String, nullable=False)
+    password = db.Column(db.String, nullable=False)
+    profile_image_url = db.Column(db.String, nullable=True, default=None)
+    last_logged_at = db.Column(db.DateTime, default=None, nullable=True)
+    created_at = db.Column(db.DateTime, default=dt.datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=dt.datetime.utcnow, onupdate=dt.datetime.utcnow)
     
     def __str__(self) -> str:
         return self.email
@@ -37,27 +43,10 @@ class User:
         return False
 
     def get_id(self):
-        return self.email
+        return str(self.id)
     
     def set_password(self, password):
         self.password = pbkdf2_sha256.hash(password)
 
     def verify_password(self, password):
         return pbkdf2_sha256.verify(password, self.password)
-
-    def save(self):
-        users.append(self)
-
-
-users = [
-    User(email="sergey@example.com", name="Sergey", password=pbkdf2_sha256.hash("password")),
-    User(email="user@test.com", name="Test User", password=pbkdf2_sha256.hash("password")),
-]
-
-
-def get_user_by_email(email: str):
-    for user in users:
-        if user.email == email:
-            return user
-    
-    return None

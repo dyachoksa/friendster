@@ -1,13 +1,14 @@
+import datetime as dt
+
 from flask import render_template, request, redirect, url_for, flash
 from flask_login import login_user, logout_user, login_required
 
-from app import app
-from app.models import User, users, get_user_by_email
+from app import app, db
+from app.models import User
 
 
 @app.route("/")
 def index():
-    print(users)
     return render_template("index.html")
 
 
@@ -29,7 +30,7 @@ def login():
         email = request.form["email"]
         password = request.form["password"]
 
-        user = get_user_by_email(email)
+        user = User.query.filter_by(email=email).first()
         if user is None:
             return render_template("login.html", error="User does not exist or password is wrong")
         
@@ -37,6 +38,9 @@ def login():
             return render_template("login.html", error="User does not exist or password is wrong")
 
         login_user(user)
+
+        user.last_logged_at = dt.datetime.utcnow()
+        db.session.commit()
 
         flash("Welcome back! You successfully signed in.", "success")
 
@@ -52,7 +56,9 @@ def register():
     if request.method == "POST":
         user = User(email=request.form["email"], name=request.form["name"])
         user.set_password(request.form["password"])
-        user.save()
+        
+        db.session.add(user)
+        db.session.commit()
 
         login_page_url = url_for('login')
 
@@ -67,6 +73,13 @@ def register():
 @login_required
 def profile():
     return render_template("profile.html")
+
+
+@app.route("/users")
+@login_required
+def users_list():
+    users = User.query.all()
+    return render_template("users_list.html", users=users)
 
 
 @app.route("/logout")
