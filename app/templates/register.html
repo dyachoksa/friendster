@@ -6,19 +6,42 @@
     <h1>Sign Up</h1>
 
     <form action="{{ url_for('register') }}" method="post">
+        {{ form.hidden_tag() }}
+
         <p>
-            <label for="id-email">Email</label> <br>
-            <input id="id-email" type="email" name="email" autocomplete="username" required autofocus>
+            {{ form.email.label }} <br>
+            {{ form.email }}
+            {% if form.email.errors %}
+                <ul class="errors">
+                    {% for error in form.email.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
         </p>
 
         <p>
-            <label for="id-name">Name</label> <br>
-            <input id="id-name" type="text" name="name" required>
+            {{ form.name.label }} <br>
+            {{ form.name }}
+            {% if form.name.errors %}
+                <ul class="errors">
+                    {% for error in form.name.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
         </p>
 
         <p>
-            <label for="id-password">Password</label> <br>
-            <input id="id-password" type="password" name="password" autocomplete="new-password" required>
+            {{ form.password.label }} <br>
+            {{ form.password }}
+            {% if form.password.errors %}
+                <ul class="errors">
+                    {% for error in form.password.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
         </p>
 
         <button type="submit">Sing up</button>&nbsp;

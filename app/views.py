@@ -4,6 +4,7 @@ from flask import render_template, request, redirect, url_for, flash
 from flask_login import login_user, logout_user, login_required
 
 from app import app, db
+from app.forms import RegistrationForm, LoginForm
 from app.models import User
 
 
@@ -25,17 +26,18 @@ def terms():
 @app.route("/login", methods=["GET", "POST"])
 def login():
     next = request.args.get('next')
+    form = LoginForm()
 
-    if request.method == "POST":
-        email = request.form["email"]
-        password = request.form["password"]
+    if form.validate_on_submit():
+        email = form.email.data
+        password = form.password.data
 
         user = User.query.filter_by(email=email).first()
         if user is None:
-            return render_template("login.html", error="User does not exist or password is wrong")
+            return render_template("login.html", form=form, error="User does not exist or password is wrong")
         
         if not user.verify_password(password):
-            return render_template("login.html", error="User does not exist or password is wrong")
+            return render_template("login.html", form=form, error="User does not exist or password is wrong")
 
         login_user(user)
 
@@ -48,14 +50,16 @@ def login():
 
         return redirect(next or url_for("index"))
 
-    return render_template("login.html", next=next)
+    return render_template("login.html", form=form, next=next)
 
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
-    if request.method == "POST":
-        user = User(email=request.form["email"], name=request.form["name"])
-        user.set_password(request.form["password"])
+    form = RegistrationForm()
+
+    if form.validate_on_submit():
+        user = User(email=form.email.data, name=form.name.data)
+        user.set_password(form.password.data)
         
         db.session.add(user)
         db.session.commit()
@@ -66,7 +70,7 @@ def register():
 
         return redirect(url_for("index"))
 
-    return render_template("register.html")
+    return render_template("register.html", form=form)
 
 
 @app.route("/profile")
