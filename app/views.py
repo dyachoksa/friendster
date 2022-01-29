@@ -1,11 +1,11 @@
 import datetime as dt
 
 from flask import render_template, request, redirect, url_for, flash
-from flask_login import login_user, logout_user, login_required
+from flask_login import login_user, logout_user, login_required, current_user
 
 from app import app, db
-from app.forms import RegistrationForm, LoginForm
-from app.models import User
+from app.forms import RegistrationForm, LoginForm, PostForm
+from app.models import User, Post
 
 
 @app.route("/")
@@ -84,6 +84,24 @@ def profile():
 def users_list():
     users = User.query.all()
     return render_template("users_list.html", users=users)
+
+
+@app.route("/posts", methods=["GET", "POST"])
+def posts():
+    posts = Post.query.order_by(Post.created_at.desc()).all()
+    form = PostForm()
+
+    if form.validate_on_submit():
+        new_post = Post(content=form.content.data)
+
+        current_user.posts.append(new_post)
+        db.session.commit()
+
+        flash("Message was posted successfully.", "success")
+
+        return redirect(url_for("posts"))
+
+    return render_template("posts.html", posts=posts, form=form)
 
 
 @app.route("/logout")

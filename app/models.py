@@ -1,4 +1,5 @@
 import datetime as dt
+from email.policy import default
 
 from passlib.hash import pbkdf2_sha256
 
@@ -14,6 +15,8 @@ class User(db.Model):
     last_logged_at = db.Column(db.DateTime, default=None, nullable=True)
     created_at = db.Column(db.DateTime, default=dt.datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=dt.datetime.utcnow, onupdate=dt.datetime.utcnow)
+
+    posts = db.relationship("Post", backref=db.backref("author", lazy="joined"), lazy=True)
     
     def __str__(self) -> str:
         return self.email
@@ -50,3 +53,22 @@ class User(db.Model):
 
     def verify_password(self, password):
         return pbkdf2_sha256.verify(password, self.password)
+
+
+class Post(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    author_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False, index=True)
+    content = db.Column(db.Text, nullable=False)
+    image = db.Column(db.String, nullable=True, default=None)
+    created_at = db.Column(db.DateTime, default=dt.datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=dt.datetime.utcnow, onupdate=dt.datetime.utcnow)
+
+    def __str__(self) -> str:
+        return self.content[:25]
+
+    def __repr__(self) -> str:
+        return "<Post id={} author={} created_at={}>".format(
+            self.id,
+            self.author_id,
+            self.created_at
+        )

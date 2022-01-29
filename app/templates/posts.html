@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Posts{% endblock %}
+
+{% block content %}
+    <h1>Friendster messages</h1>
+
+    <form action="{{ url_for('posts') }}" method="post">
+        {{ form.hidden_tag() }}
+
+        <p>
+            {{ form.content.label }} <br>
+            {{ form.content }}
+            {% if form.content.errors %}
+                <ul class="errors">
+                    {% for error in form.content.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </p>
+
+        <button type="submit">Post</button>
+    </form>
+
+
+    <hr>
+
+    {% for post in posts %}
+        <article>
+            <small>
+                By: <em>{{ post.author.name }}</em> |
+                Posted on: {{ post.created_at.strftime('%c') }}
+            </small>
+            <p>{{ post.content | replace("\n", "<br/>") | safe }}</p>
+        </article>
+
+        {% if not loop.last %}
+            <hr/>
+        {% endif %}
+    {% endfor %}
+{% endblock %}

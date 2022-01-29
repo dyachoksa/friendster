@@ -1,7 +1,7 @@
 from ast import Pass
 from unicodedata import name
 from flask_wtf import FlaskForm
-from wtforms import StringField, EmailField, PasswordField
+from wtforms import StringField, EmailField, PasswordField, TextAreaField
 from wtforms.validators import DataRequired, Email, Length
 
 
@@ -14,3 +14,7 @@ class RegistrationForm(FlaskForm):
 class LoginForm(FlaskForm):
     email = EmailField("Email", validators=[DataRequired(), Email()])
     password = PasswordField("Password", validators=[DataRequired()])
+
+
+class PostForm(FlaskForm):
+    content = TextAreaField("Message", validators=[DataRequired(), Length(min=5, max=600)])
